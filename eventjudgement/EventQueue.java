@@ -41,7 +41,7 @@ public class EventQueue {
     /**
 	 * the global blocking queue is used for storing .png or jpeg image path
 	 */
-	public static final BlockingQueue<String> PATHQUEUE = new ArrayBlockingQueue<>(MAXVALUE);
+	private static final BlockingQueue<String> PATHQUEUE = new ArrayBlockingQueue<>(MAXVALUE);
     
     private EventQueue() {
 		
@@ -84,7 +84,7 @@ public class EventQueue {
             System.out.println("event data consumer:start to consume data");
     		
     		Vector<String> data = MANAGER.take();
-    		String str = PATHQUEUE.take();
+    		String path = PATHQUEUE.take();
     		ArrayList<Double> vd = new ArrayList<>();
     		//each s is a string, such as: 0 0 0 -833 -87 811 2020-10-2311:09:59
     		for(String s:data) {
@@ -104,7 +104,10 @@ public class EventQueue {
     			//System.out.println("-------------------------------------");
     		}
     		
-    		WaveChart.saveAsFile(WaveChart.init(vd, false), str, 560, 560, 0);
+    		WaveChart.saveAsFile(WaveChart.init(vd, false), path, 560, 560, 0);
+    		
+    		PythonCaller.PATHLIST.put(path);
+    		
     		
     		System.out.println("event data consumer:consume data over");
             System.out.println("event data queue:the queue size is " + getQueueSize()+"after consumer consumes data");

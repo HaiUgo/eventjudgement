@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -17,12 +20,23 @@ import java.util.concurrent.Executors;
 public class PythonCaller {
 
 	/**
+	 * the max capacity of this queue
+	 */
+	private static final int MAXVALUE = 21;
+	
+	/**
 	 * a flag indicates that the startManager() function only need start once,
 	 * you can find this variable used in EarthQuake class.
 	 */
 	public static boolean isFirstStart = true;
 	
-
+    //public static final ArrayList<String> PATHLIST = new ArrayList<String>();
+	
+    /**
+   	 * the global blocking queue is used for storing .png or jpeg image path
+   	 */
+   	public static final BlockingQueue<String> PATHLIST = new ArrayBlockingQueue<>(MAXVALUE);
+    
 	/**
 	 * call python program
 	 * 
@@ -65,11 +79,11 @@ public class PythonCaller {
 
 	private static void consume() {
 		try {
-			if(EventQueue.PATHQUEUE.size()>0) {
+			if(PATHLIST.size()>0) {
                 System.out.println("-------------------------------------------------------");
 				System.out.println("cnn consumer:start consume data");
 
-				String path = EventQueue.PATHQUEUE.take();
+				String path = PATHLIST.take();
 				String currentExecutePath = " " + System.getProperty("user.dir") + File.separator;
 				String[] commands = new String[3];
 				commands[0] = currentExecutePath + "Predict_EQ.py"; // the python file to execute
@@ -79,7 +93,7 @@ public class PythonCaller {
 				pythonCaller(commands);
 				
 				System.out.println("cnn consumer:consume data over");
-				System.out.println("cnn file path queue:the queue size is " + EventQueue.PATHQUEUE.size()+"after consumer consumes data");
+				System.out.println("cnn file path queue:the queue size is " + PATHLIST.size()+"after consumer consumes data");
                 System.out.println("-------------------------------------------------------");
 			}
 		} catch (InterruptedException e) {
@@ -90,10 +104,10 @@ public class PythonCaller {
 	private static class Consumer implements Runnable {
 		public void run() {
 			try {
-				Thread.sleep(20000);
+				Thread.sleep(6000);
 				while (true) {
 					consume();
-					Thread.sleep(6000);
+					Thread.sleep(2000);
 				}
 			} catch (InterruptedException e) {
 			}
