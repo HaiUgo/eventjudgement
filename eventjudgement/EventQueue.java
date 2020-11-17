@@ -34,10 +34,14 @@ public class EventQueue {
 	public static boolean isFirstStart = true;
 	
 	/**
-	 * the global blocking queue
+	 * the global blocking queue is used for storing 18s data of each station 
 	 */
-    private static final BlockingQueue<Vector<String>> manager = new ArrayBlockingQueue<>(MAXVALUE);
+    private static final BlockingQueue<Vector<String>> MANAGER = new ArrayBlockingQueue<>(MAXVALUE);
     
+    /**
+	 * the global blocking queue is used for storing .png or jpeg image path
+	 */
+	public static final BlockingQueue<String> PATHQUEUE = new ArrayBlockingQueue<>(MAXVALUE);
     
     private EventQueue() {
 		
@@ -45,15 +49,17 @@ public class EventQueue {
     
     /**
      * 
-     * @param datas ,the 18s data ,this function is used in EarthQuacke class.
+     * @param datas,the 18s data ,this function is used in EarthQuacke class.
+     * @param path,the generated image path 
      */
-    public static void produce(Vector<String> datas) {
+    public static void produce(Vector<String> datas,String path) {
     	try {
     		if(getQueueSize()<=MAXVALUE) {
-    			manager.put(datas);
-                System.out.println("the queue size is：" + getQueueSize()+" after producer produces data");
+    			MANAGER.put(datas);
+    			PATHQUEUE.put(path);
+                System.out.println("event data queue:the queue size is " + getQueueSize()+" after producer produces data");
     		}else {
-    			System.out.println("--------the queue is full-------------");
+    			System.out.println("--------event data queue is full-------------");
     		}
 			
 		} catch (InterruptedException e) {
@@ -63,21 +69,25 @@ public class EventQueue {
     
     /**
      * 
-     * @return the used capacity of this queue
+     * @return the used capacity of manager queue
      */
     private static int getQueueSize() {
-        return manager.size();
+        return MANAGER.size();
     }
     
     /**
-     * 
+     * convert datas to pictures
      */
     private static void consume(){
     	try {
-    		Vector<String> str = manager.take();
+            System.out.println("-------------------------------------------------------");
+            System.out.println("event data consumer:start to consume data");
+    		
+    		Vector<String> data = MANAGER.take();
+    		String str = PATHQUEUE.take();
     		ArrayList<Double> vd = new ArrayList<>();
     		//each s is a string, such as: 0 0 0 -833 -87 811 2020-10-2311:09:59
-    		for(String s:str) {
+    		for(String s:data) {
     			//System.out.println("-------------------------------------");
     			//System.out.println(s);
     			
@@ -94,6 +104,11 @@ public class EventQueue {
     			//System.out.println("-------------------------------------");
     		}
     		
+    		WaveChart.saveAsFile(WaveChart.init(vd, false), str, 560, 560, 0);
+    		
+    		System.out.println("event data consumer:consume data over");
+            System.out.println("event data queue:the queue size is " + getQueueSize()+"after consumer consumes data");
+            System.out.println("-------------------------------------------------------");
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -103,10 +118,7 @@ public class EventQueue {
         public void run() {
             try {
                 while (true) {
-                    System.out.println("消费者开始消费数据----------------");
                     consume();
-                    System.out.println("消费者消费数据完毕----------------");
-                    System.out.println("消费者消费完毕后队列大小：" + getQueueSize());
                     Thread.sleep(10);
                 }
             } catch (InterruptedException e) {}
