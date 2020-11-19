@@ -59,14 +59,13 @@ public class PythonCaller {
 			}
 			in.close();
 
-			// read subprocess's error output results
-			// BufferedReader errorIn = new BufferedReader(new
-			// InputStreamReader(proc.getErrorStream()));
-			// String error = null;
-			// while ((error = errorIn.readLine()) != null) {
-			// System.out.println(error);
-			// }
-			// errorIn.close();
+			 //read subprocess's error output results
+//			 BufferedReader errorIn = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+//			 String error = null;
+//			 while ((error = errorIn.readLine()) != null) {
+//			 System.out.println(error);
+//			 }
+//			 errorIn.close();
 
 			proc.waitFor();
 			System.out.println("***************cnn predict done!******************");
@@ -84,11 +83,11 @@ public class PythonCaller {
 				System.out.println("cnn consumer:start consume data");
 
 				String path = PATHLIST.take();
-				String currentExecutePath = " " + System.getProperty("user.dir") + File.separator;
+				String currentExecutePath = " " + System.getProperty("user.dir") + File.separator+"resource"+File.separator;
 				String[] commands = new String[3];
 				commands[0] = currentExecutePath + "Predict_EQ.py"; // the python file to execute
 				commands[1] = currentExecutePath + "EQfinder.h5"; // prediction model
-				commands[2] = path; // prediction .png image
+				commands[2] = path; // prediction .jpeg image
 				System.out.println("*****************"+path+"***************");
 				pythonCaller(commands);
 				
@@ -132,7 +131,7 @@ public class PythonCaller {
 	// --------------------------------------------------------------
 	// this is the test code
 	public static void main(String[] args) {
-		String currentExecutePath = " " + System.getProperty("user.dir") + File.separator;
+		String currentExecutePath = " " + System.getProperty("user.dir") + File.separator+"resource"+File.separator;
 		// currentExecutePath = currentExecutePath.replaceAll("\\\\", "//");//替换\
 		System.out.println("path = " + currentExecutePath);
 
@@ -140,7 +139,7 @@ public class PythonCaller {
 		// note: do not forget to leave a blank space before the command parameter
 		commands[0] = currentExecutePath + "Predict_EQ.py"; // the python file to execute
 		commands[1] = currentExecutePath + "EQfinder.h5"; // prediction model
-		commands[2] = currentExecutePath + "a.jpg"; // prediction .jpg image
+		commands[2] = currentExecutePath + "a.jpeg"; // prediction .jpg image
 		for (String temp : commands) {
 			System.out.println("command:" + temp);
 		}

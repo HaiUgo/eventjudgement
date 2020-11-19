@@ -104,7 +104,7 @@ public class EventQueue {
     			//System.out.println("-------------------------------------");
     		}
     		
-    		WaveChart.saveAsFile(WaveChart.init(vd, false), path, 560, 560, 0);
+    		WaveChart.saveAsFile(WaveChart.init(vd, false), path, 560, 560, 1);
     		
     		PythonCaller.PATHLIST.put(path);
     		
