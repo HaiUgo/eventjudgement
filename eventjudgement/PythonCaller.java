@@ -60,12 +60,12 @@ public class PythonCaller {
 			in.close();
 
 			 //read subprocess's error output results
-//			 BufferedReader errorIn = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
-//			 String error = null;
-//			 while ((error = errorIn.readLine()) != null) {
-//			 System.out.println(error);
-//			 }
-//			 errorIn.close();
+			 BufferedReader errorIn = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+			 String error = null;
+			 while ((error = errorIn.readLine()) != null) {
+			 System.out.println(error);
+			 }
+			 errorIn.close();
 
 			proc.waitFor();
 			System.out.println("***************cnn predict done!******************");
@@ -86,8 +86,11 @@ public class PythonCaller {
 				String currentExecutePath = " " + System.getProperty("user.dir") + File.separator+"resource"+File.separator;
 				String[] commands = new String[3];
 				commands[0] = currentExecutePath + "Predict_EQ.py"; // the python file to execute
-				commands[1] = currentExecutePath + "EQfinder.h5"; // prediction model
+				commands[1] = currentExecutePath + "EQfinder.h5"+" "; // prediction model
 				commands[2] = path; // prediction .jpeg image
+				for(String str:commands) {
+					System.out.println(str);
+				}
 				System.out.println("*****************"+path+"***************");
 				pythonCaller(commands);
 				
@@ -103,10 +106,10 @@ public class PythonCaller {
 	private static class Consumer implements Runnable {
 		public void run() {
 			try {
-				Thread.sleep(6000);
+				Thread.sleep(2000);
 				while (true) {
 					consume();
-					Thread.sleep(2000);
+					Thread.sleep(1000);
 				}
 			} catch (InterruptedException e) {
 			}
