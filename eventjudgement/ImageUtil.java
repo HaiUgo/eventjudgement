@@ -118,7 +118,10 @@ public class ImageUtil {
    //---------------------------------------------------------------------
    //this is the test code
    public static void main(String[] args) {
-	   
+	   //2020-10-23110956_2_utyw event11.11%_noise88.89%
+	   String path = "D:/1.jpg";
+	   String[] para = {"2020-10-23110956","2","utyw","11.11%","88.89%","1"};
+	   readImage2DB(path,para);
    }
    //end test code
    //----------------------------------------------------------------------
