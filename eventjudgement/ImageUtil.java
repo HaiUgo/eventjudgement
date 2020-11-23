@@ -97,7 +97,7 @@ public class ImageUtil {
        ResultSet rs = null;
        try {
            conn = DBUtil.getConnection();
-           String sql = "select * from photo where day =? and id=?";
+           String sql = "select * from mine_quack_wavejudgement where day =? and id=?";
            ps = conn.prepareStatement(sql);
            ps.setString(1, para[0]);
            ps.setString(2, para[1]);
@@ -119,9 +119,13 @@ public class ImageUtil {
    //this is the test code
    public static void main(String[] args) {
 	   //2020-10-23110956_2_utyw event11.11%_noise88.89%
-	   String path = "D:/1.jpg";
-	   String[] para = {"2020-10-23110956","2","utyw","11.11%","88.89%","1"};
-	   readImage2DB(path,para);
+//	   String path = "D:/1.jpg";
+//	   String[] para = {"2020-10-23110956","2","utyw","11.11%","88.89%","1"};
+//	   readImage2DB(path,para);
+	   
+	   String targetPath = "D:/new.jpg";
+	   String[] para2= {"2020-10-23110956","2"};
+	   readDB2Image(targetPath,para2);
    }
    //end test code
    //----------------------------------------------------------------------
