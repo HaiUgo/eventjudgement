@@ -60,12 +60,12 @@ public class PythonCaller {
 			in.close();
 
 			 //read subprocess's error output results
-			 BufferedReader errorIn = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
-			 String error = null;
-			 while ((error = errorIn.readLine()) != null) {
-			 System.out.println(error);
-			 }
-			 errorIn.close();
+//			 BufferedReader errorIn = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+//			 String error = null;
+//			 while ((error = errorIn.readLine()) != null) {
+//			 System.out.println(error);
+//			 }
+//			 errorIn.close();
 
 			proc.waitFor();
 			System.out.println("***************cnn predict done!******************");
