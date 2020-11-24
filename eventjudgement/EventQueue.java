@@ -106,7 +106,8 @@ public class EventQueue {
     		
     		WaveChart.saveAsFile(WaveChart.init(vd, false), path, 560, 560, 1);
     		
-    		PythonCaller.PATHLIST.put(path);
+    		if(path!=null)
+    			PythonCaller.PATHLIST.put(path);
     		
     		
     		System.out.println("event data consumer:consume data over");
