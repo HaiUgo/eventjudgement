@@ -1,0 +1,27 @@
+//if the number of motivates sensor is greater than 3, we will put the motivated data into queue for generating event wave image.
+			if(countNumber>=3 && EarthQuake.realMoti==true) {
+				if(EventQueue.isFirstStart) {
+					EventQueue.startManager();
+					EventQueue.isFirstStart = false;
+				}
+				for(int i=0;i<sensors1.length;i++) {
+					System.out.println("------------loop"+i+"----------------------");
+					System.out.println("start to put data into event data queue------------");
+					
+					String str = sensors1[i].getTime();
+					String[] strList= str.split(":");
+					String time="";
+					for(String s:strList) {
+						//System.out.println("s:"+s);
+						time+=s;
+					}
+					
+					String path = "D:/data/"+time+"_"+i+"_"+sensors1[i].getpanfu()+".jpeg";
+					EventQueue.produce(sensors1[i].getCutVectorData(),path);
+					System.out.println("finished putting data into event data queue------------");
+				}
+				if(PythonCaller.isFirstStart) {
+					PythonCaller.startManager();
+					PythonCaller.isFirstStart = false;
+				}
+			}
