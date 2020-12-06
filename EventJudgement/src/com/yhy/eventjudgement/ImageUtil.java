@@ -55,11 +55,13 @@ public class ImageUtil {
     * save the image binary stream to the data table 
     * @param path ,the image source path, such as :"D:/1.jpg"
     * @param para, the parameters satisfy the PreparedStatement  
+    * @return success, true if operation is successful
     */
-   public static void readImage2DB(String path,String[] para) {
+   public static boolean readImage2DB(String path,String[] para) {
        Connection conn = null;
        PreparedStatement ps = null;
        FileInputStream in = null;
+       boolean success = false;
        try {
            in = new FileInputStream(new File(path));
            conn = DBUtil.getConnection();
@@ -75,6 +77,7 @@ public class ImageUtil {
            ps.setBinaryStream(7, in, in.available());
            int count = ps.executeUpdate();
            if (count > 0) {
+        	   success = true;
                System.out.println("insert successfull！");
            } else {
                System.out.println("insert failed！");
@@ -84,6 +87,7 @@ public class ImageUtil {
        } finally {
            DBUtil.close(conn,ps,null);
        }
+       return success;
    }
    
    /**

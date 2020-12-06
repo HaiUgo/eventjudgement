@@ -103,16 +103,17 @@ public class EventQueue {
     			//System.out.println("mean:"+mean);
     			//System.out.println("-------------------------------------");
     		}
-    		
-    		WaveChart.saveAsFile(WaveChart.init(vd, false), path, 600, 600, 1);
-    		
-    		if(path!=null)
-    			PythonCaller.PATHLIST.put(path);
-    		
-    		
-    		System.out.println("event data consumer:consume data over");
-            System.out.println("event data queue:the queue size is " + getQueueSize()+"after consumer consumes data");
-            System.out.println("-------------------------------------------------------");
+    		synchronized(EventQueue.class) {
+    			WaveChart.saveAsFile(WaveChart.init(vd, false), path, 600, 600, 1);
+        		
+        		System.out.println("event data consumer:consume data over");
+                System.out.println("event data queue:the queue size is " + getQueueSize()+"after consumer consumes data");
+                System.out.println("-------------------------------------------------------");
+        		
+                if(path!=null) {
+        			PythonCaller.PATHLIST.put(path);
+        		}
+    		}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

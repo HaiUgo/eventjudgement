@@ -11,17 +11,11 @@ import java.util.Vector;
 
 
 public class ReadCSVFile {
-	
-	private static Vector[] datas = null;
 
 	public ReadCSVFile() {
 	}
 	
-	public Vector[] getVector() {
-		return datas;
-	}
-	
-	public ReadCSVFile(String filePath) {
+	public static  Vector[] readCSV(String filePath) {
 		//解析文件路径  比如路径：D:/data/ConstructionData/5moti/syztwxu 2020-06-18 04-19-20`47.csv
         String[] items = filePath.split("/");	
         String panfu = items[items.length-1].split(" ")[0]; //即syztwxu
@@ -29,7 +23,7 @@ public class ReadCSVFile {
 		File file = new File(filePath);
 		BufferedReader bufferedReader = null;
 		String line = "";
-		datas = new Vector[panfuNumber]; //数据添加的是String类型的数据
+		Vector[] datas = new Vector[panfuNumber]; //数据添加的是String类型的数据
 		for(int i=0;i<panfuNumber;i++) {         //将每一行所有台站数据分割成几个台站的数据
 			datas[i] = new Vector<String>();
 		}
@@ -76,16 +70,20 @@ public class ReadCSVFile {
 				}
 			}
 		}
+		return datas;
 	}
 	
 	public static void main(String[] args)  {
-		ReadCSVFile r = new ReadCSVFile("D:\\data\\ConstructionData\\5moti\\syztwxu 2020-06-18 04-19-20`47.csv");
-	    Vector[] v = r.getVector();
-	    Vector<String> vec = v[0];
-	    int i = 0;
-	    for(String s:vec) {
-	    	System.out.println("s:"+i+" "+s);
-	    	i++;
-	    }
+	    //Vector[] v = readCSV("D:\\data\\ConstructionData\\5moti\\syztwxu 2020-06-18 04-19-20`47.csv");;
+	    //D:/data/ConstructionData/5moti/zstryu 2020-11-23 07-15-34`05.csv
+	    Vector[] v = readCSV("D:/data/ConstructionData/5moti/syztwxu 2020-06-18 04-19-20`47.csv");;
+
+		Vector<String> vec = v[0];
+	    System.out.println("vec size:"+vec.size());
+//	    int i = 0;
+//	    for(String s:vec) {
+//	    	System.out.println("s:"+i+" "+s);
+//	    	i++;
+//	    }
 	}
 }

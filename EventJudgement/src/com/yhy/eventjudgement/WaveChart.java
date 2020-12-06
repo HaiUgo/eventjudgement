@@ -110,11 +110,17 @@ public class WaveChart {
 		try {
 			out = new FileOutputStream(outputPath);
 			// save as png
-			if (which == 0)
+			if (which == 0) {
 				ChartUtilities.writeChartAsPNG(out, chart, weight, height);
+				System.out.println("write chart "+outputPath+" successfully!");
+			}
+				
 			// save as jpeg
-			if (which == 1)
+			if (which == 1) {
 				ChartUtilities.writeChartAsJPEG(out, chart, weight, height);
+				System.out.println("write chart "+outputPath+" successfully!");
+			}
+				
 			out.flush();
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
